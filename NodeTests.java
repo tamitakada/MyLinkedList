@@ -4,6 +4,7 @@ public class NodeTests {
   public static void main(String[] args) {
     testNodeCreationAndGet();
     testDataSet();
+    testNextPrevSet();
   }
 
   public static void testNodeCreationAndGet() {
@@ -61,6 +62,43 @@ public class NodeTests {
     results.add(failInfo.isEmpty());
     Utils.showResults(results, "Test Set Data");
     Utils.showRandomResults(failInfo);
+  }
+
+  public static void testNextPrevSet() {
+    ArrayList<Boolean> results = new ArrayList<Boolean>();
+
+    Node one = new Node("CATS!");
+    Node prev = new Node(" kittens ");
+    Node next = new Node("meow");
+
+    results.add(one.getNext() == null);
+    results.add(one.getPrev() == null);
+
+    one.setNext(next);
+    one.setPrev(prev);
+
+    results.add(one.getNext() == next);
+    results.add(one.getPrev() == prev);
+
+    results.add(true);
+
+    for (int i = 0; i < 100; i++) {
+      String str = Utils.createRandomString();
+      Node test = new Node("");
+
+      Node testPrev = new Node(Utils.createRandomString());
+      Node testNext = new Node(Utils.createRandomString());
+
+      test.setPrev(testPrev);
+      test.setNext(testNext);
+
+      if (test.getNext() != testNext || test.getPrev() != testPrev) {
+        results.set(results.size() - 1, false);
+        break;
+      }
+    }
+
+    Utils.showResults(results, "Test Set Next/Prev");
   }
 
 }
