@@ -3,6 +3,7 @@ import java.util.*;
 public class LinkedTests {
   public static void main(String[] args) {
     testAddAndSizeWithGet();
+    testAddWithIndex();
   }
 
   public static void testAddAndSizeWithGet() {
@@ -44,8 +45,72 @@ public class LinkedTests {
       }
     }
 
-  //  results.add(one.get(0) != one.get(2));
     Utils.showResults(results, "Test add/size/get");
+  }
+
+  public static void testAddWithIndex() {
+    ArrayList<Boolean> results = new ArrayList<Boolean>();
+
+    MyLinkedList one = new MyLinkedList();
+    String[] oneData = {"dogs", "?cats?", "Guinea pigs", " RATS! "};
+
+    for (int i = 0; i < oneData.length; i++) {
+      try {
+        results.add(one.add(i, oneData[i]));
+      } catch (IllegalArgumentException e) {
+        results.add(false);
+      }
+    }
+
+    for (int i = 0; i < oneData.length; i++) {
+      try {
+        results.add(one.get(i).equals(oneData[i]));
+      } catch (IllegalArgumentException e) {
+        results.add(false);
+      }
+    }
+
+    try {
+      results.add(one.add(3, "mice"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    oneData = new String[]{"dogs", "?cats?", "Guinea pigs", "mice", " RATS! "};
+
+    for (int i = 0; i < oneData.length; i++) {
+      boolean res = true;
+      try {
+        res = one.get(i).equals(oneData[i]);
+      } catch (IllegalArgumentException e) {
+        res = false;
+      }
+
+      if (!res) {
+        results.add(false);
+        break;
+      } else if (i == oneData.length - 1) {
+        results.add(true);
+      }
+    }
+
+    one.toString();
+
+    try {
+      one.add(-2, "ahasda");
+      results.add(false);
+    } catch (IllegalArgumentException e) {
+      results.add(true);
+    }
+
+    try {
+      one.add(6, "Yay");
+      results.add(false);
+    } catch (IllegalArgumentException e) {
+      results.add(true);
+    }
+
+    Utils.showResults(results, "Test add w/ index");
   }
 
 }
