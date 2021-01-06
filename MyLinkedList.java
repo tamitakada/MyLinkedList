@@ -73,29 +73,21 @@ public class MyLinkedList{
     return "";
   }
   public String toString() {
-    Node current = getStart();
-    while (current != null) {
-      System.out.println(current);
-      System.out.println("data: " + current.getData());
-      System.out.println("next: " + current.getNext());
-      System.out.println("prev: " + current.getPrev());
-      System.out.println();
-      current = current.getNext();
-    }
-/*
     String s = "[";
 
+    Node current = getStart();
     int count = 0;
-    while (current != null && current.getNext() != null && count < size() - 1) {
-      s += current.getData() + ", ";
+    while (current != null) {
+      s += current.getData();
+
+      if (count == size() - 1) s += "]";
+      else s += ", ";
+
       current = current.getNext();
       count++;
     }
 
-    if (getEnd() != null) s += getEnd().getData() + "]";
-    else s += "]";
-*/
-    return "";
+    return s;
   }
 
   private void setSize(int newSize) {

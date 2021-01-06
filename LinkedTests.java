@@ -4,6 +4,7 @@ public class LinkedTests {
   public static void main(String[] args) {
     testAddAndSizeWithGet();
     testAddWithIndex();
+    testToString();
   }
 
   public static void testAddAndSizeWithGet() {
@@ -121,6 +122,74 @@ public class LinkedTests {
     }
 
     Utils.showResults(results, "Test add w/ index");
+  }
+
+  public static void testToString() {
+    ArrayList<Boolean> results = new ArrayList<Boolean>();
+
+    MyLinkedList one = new MyLinkedList();
+    String[] oneData = {"Fusili", "penne", "farfalle", "linguini"};
+
+    results.add(true);
+
+    for (int i = 0; i < oneData.length; i++) {
+      try {
+        one.add(oneData[i]);
+      } catch (IllegalArgumentException e) {
+        results.set(0, false);
+        break;
+      }
+    }
+
+    results.add(one.toString().equals("[Fusili, penne, farfalle, linguini]"));
+
+    try {
+      results.add(one.add(1, "ziti"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    try {
+      results.add(one.add(3, "rigatoni"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    results.add(one.toString().equals("[Fusili, ziti, penne, rigatoni, farfalle, linguini]"));
+
+    MyLinkedList two = new MyLinkedList();
+    results.add(two.toString().equals("[]"));
+
+    two.add("pasta!");
+    results.add(two.toString().equals("[pasta!]"));
+
+    ArrayList<String> failInfo = new ArrayList<String>();
+
+    for (int i = 0; i < 100; i++) {
+      String[] test = Utils.createRandomStrArr();
+      MyLinkedList testList = new MyLinkedList();
+
+      for (int j = 0; j < test.length; j++) {
+        try {
+          testList.add(test[j]);
+        } catch (IllegalArgumentException e) {
+          failInfo.add("Array - " + Arrays.toString(test));
+          break;
+        }
+      }
+
+      if (failInfo.size() > 0) {
+        results.add(false);
+        break;
+      } else if (!Arrays.toString(test).equals(testList.toString())) {
+        failInfo.add("To String fail -" + Arrays.toString(test));
+        results.add(false);
+        break;
+      } else if (i == 99) results.add(true);
+    }
+
+    Utils.showResults(results, "Test to string");
+    Utils.showRandomResults(failInfo);
   }
 
 }

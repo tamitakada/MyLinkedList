@@ -18,6 +18,17 @@ public class Utils {
     }
   }
 
+  public static String[] createRandomStrArr() {
+    int len = rng.nextInt(500);
+    String[] toRet = new String[len];
+
+    for (int i = 0; i < len; i++) {
+      toRet[i] = createRandomString();
+    }
+
+    return toRet;
+  }
+
   public static String createRandomString() {
     String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
     "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
