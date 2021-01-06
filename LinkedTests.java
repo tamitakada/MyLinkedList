@@ -76,7 +76,19 @@ public class LinkedTests {
       results.add(false);
     }
 
-    oneData = new String[]{"dogs", "?cats?", "Guinea pigs", "mice", " RATS! "};
+    try {
+      results.add(one.add(2, "Snakes"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    try {
+      results.add(one.add(0, "dogs"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    oneData = new String[]{"dogs", "dogs", "?cats?", "Snakes", "Guinea pigs", "mice", " RATS! "};
 
     for (int i = 0; i < oneData.length; i++) {
       boolean res = true;
@@ -94,8 +106,6 @@ public class LinkedTests {
       }
     }
 
-    one.toString();
-
     try {
       one.add(-2, "ahasda");
       results.add(false);
@@ -104,7 +114,7 @@ public class LinkedTests {
     }
 
     try {
-      one.add(6, "Yay");
+      one.add(19, "Yay");
       results.add(false);
     } catch (IllegalArgumentException e) {
       results.add(true);
