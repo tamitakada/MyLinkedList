@@ -70,8 +70,42 @@ public class MyLinkedList{
   }
 
   public String set(int index, String value) {
-    return "";
+    if (index < 0 || index > size()) throw new IllegalArgumentException();
+    if (index == size()) {
+      add(value);
+      return "";
+    } else {
+      Node toAdd = new Node(value);
+
+      Node current = getStart();
+      int count = 0;
+
+      while (current != null && count < index) {
+        current = current.getNext();
+        count++;
+      }
+
+      if (current != null) {
+        toAdd.setPrev(current.getPrev());
+        toAdd.setNext(current.getNext());
+
+        if (current.getNext() != null) {
+          Node next = current.getNext();
+          next.setPrev(toAdd);
+        }
+
+        if (current.getPrev() != null) {
+          Node prev = current.getPrev();
+          prev.setNext(toAdd);
+        }
+
+        if (current == getEnd()) setEnd(toAdd);
+        if (current == getStart()) setStart(toAdd);
+      }
+      return current.getData();
+    }
   }
+
   public String toString() {
     String s = "[";
 
@@ -80,14 +114,13 @@ public class MyLinkedList{
     while (current != null) {
       s += current.getData();
 
-      if (count == size() - 1) s += "]";
-      else s += ", ";
+      if (count != size() - 1) s += ", ";
 
       current = current.getNext();
       count++;
     }
 
-    return s;
+    return s + "]";
   }
 
   private void setSize(int newSize) {

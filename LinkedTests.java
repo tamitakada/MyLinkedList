@@ -2,9 +2,10 @@ import java.util.*;
 
 public class LinkedTests {
   public static void main(String[] args) {
-    testAddAndSizeWithGet();
-    testAddWithIndex();
-    testToString();
+  //  testAddAndSizeWithGet();
+  //  testAddWithIndex();
+  //  testToString();
+    testSet();
   }
 
   public static void testAddAndSizeWithGet() {
@@ -190,6 +191,77 @@ public class LinkedTests {
 
     Utils.showResults(results, "Test to string");
     Utils.showRandomResults(failInfo);
+  }
+
+  public static void testSet() {
+    ArrayList<Boolean> results = new ArrayList<Boolean>();
+
+    MyLinkedList one = new MyLinkedList();
+    String[] oneData = {"Fusili", "penne", "farfalle", "linguini"};
+
+    results.add(true);
+
+    for (int i = 0; i < oneData.length; i++) {
+      try {
+        one.add(oneData[i]);
+      } catch (IllegalArgumentException e) {
+        results.set(0, false);
+        break;
+      }
+    }
+
+    try {
+      results.add(one.set(1, "ziti").equals("penne"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    try {
+      results.add(one.set(3, "rigatoni").equals("linguini"));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    try {
+      one.set(10, "tagliatelle");
+      results.add(false);
+    } catch (IllegalArgumentException e) {
+      results.add(true);
+    }
+
+    try {
+      one.set(-1, "spaghetti");
+      results.add(false);
+    } catch (IllegalArgumentException e) {
+      results.add(true);
+    }
+
+    try {
+      results.add(one.set(4, "angel hair").equals(""));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    results.add(one.toString().equals("[Fusili, ziti, farfalle, rigatoni, angel hair]"));
+
+    MyLinkedList two = new MyLinkedList();
+
+    try {
+      two.set(1, "marinara");
+      results.add(false);
+    } catch (IllegalArgumentException e) {
+      results.add(true);
+    }
+
+    try {
+      results.add(two.set(0, "lasagna").equals(""));
+    } catch (IllegalArgumentException e) {
+      results.add(false);
+    }
+
+    results.add(two.toString().equals("[lasagna]"));
+
+    Utils.showResults(results, "Test set");
   }
 
 }
