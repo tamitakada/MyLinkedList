@@ -31,37 +31,39 @@ public class MyLinkedList{
   }
 
   public boolean add(int index, String value) {
-    if (index < 0 || index > size()) throw new IllegalArgumentException();
+    if (index < 0 || index > size()) throw new IndexOutOfBoundsException();
     Node toAdd = new Node(value);
 
     Node current = getStart();
     int count = 0;
 
-    while (current != null && count < index - 1) {
+    while (current != null && count < index) {
       current = current.getNext();
       count++;
     }
 
     if (current != null) {
-      if (current.getNext() != null) {
-        Node next = current.getNext();
-        next.setPrev(toAdd);
-        toAdd.setNext(next);
+      if (current.getPrev() != null) {
+        Node prev = current.getPrev();
+        prev.setNext(toAdd);
+        toAdd.setPrev(prev);
       }
 
-      toAdd.setPrev(current);
-      current.setNext(toAdd);
+      toAdd.setNext(current);
+      current.setPrev(toAdd);
 
       setSize(size() + 1);
     } else {
       add(value);
     }
 
+    if (index == 0) setStart(toAdd);
+
     return true;
   }
 
   public String get(int index) {
-    if (index < 0 || (index >= size() && size() != 0)) throw new IllegalArgumentException();
+    if (index < 0 || (index >= size() && size() != 0)) throw new IndexOutOfBoundsException();
     Node current = getStart();
     for (int i = 0; i < index; i++) {
       current = current.getNext();
@@ -70,7 +72,7 @@ public class MyLinkedList{
   }
 
   public String set(int index, String value) {
-    if (index < 0 || index > size()) throw new IllegalArgumentException();
+    if (index < 0 || index > size()) throw new IndexOutOfBoundsException();
     if (index == size()) {
       add(value);
       return "";
@@ -121,6 +123,19 @@ public class MyLinkedList{
     }
 
     return s + "]";
+  }
+
+  public String remove(int index) {
+    return "";
+  }
+
+
+/*
+*@postcondition: All of the elements from other are removed from the other, and connected to the end of this linked list.
+*@postcondition: The size of other is reduced to 0.
+*@postcondition: The size of this is now the combined sizes of both original lists
+*/
+  public void extend(MyLinkedList other){
   }
 
   private void setSize(int newSize) {

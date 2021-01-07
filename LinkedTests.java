@@ -2,10 +2,14 @@ import java.util.*;
 
 public class LinkedTests {
   public static void main(String[] args) {
-  //  testAddAndSizeWithGet();
-  //  testAddWithIndex();
-  //  testToString();
+    testAddAndSizeWithGet();
+    testAddWithIndex();
+    testToString();
     testSet();
+  }
+
+  public static void testRemove() {
+
   }
 
   public static void testAddAndSizeWithGet() {
@@ -20,7 +24,7 @@ public class LinkedTests {
     try {
       String res = one.get(0);
       results.add(res.equals("Hello world!!"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
@@ -30,7 +34,7 @@ public class LinkedTests {
     try {
       String res = one.get(1);
       results.add(res.equals("##hello"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
@@ -42,7 +46,7 @@ public class LinkedTests {
       try {
         String res = one.get(i);
         results.add(res.equals(linkedContents[i]));
-      } catch (IllegalArgumentException e) {
+      } catch (IndexOutOfBoundsException e) {
         results.add(false);
       }
     }
@@ -59,7 +63,7 @@ public class LinkedTests {
     for (int i = 0; i < oneData.length; i++) {
       try {
         results.add(one.add(i, oneData[i]));
-      } catch (IllegalArgumentException e) {
+      } catch (IndexOutOfBoundsException e) {
         results.add(false);
       }
     }
@@ -67,26 +71,26 @@ public class LinkedTests {
     for (int i = 0; i < oneData.length; i++) {
       try {
         results.add(one.get(i).equals(oneData[i]));
-      } catch (IllegalArgumentException e) {
+      } catch (IndexOutOfBoundsException e) {
         results.add(false);
       }
     }
 
     try {
       results.add(one.add(3, "mice"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
     try {
       results.add(one.add(2, "Snakes"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
     try {
       results.add(one.add(0, "dogs"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
@@ -96,7 +100,7 @@ public class LinkedTests {
       boolean res = true;
       try {
         res = one.get(i).equals(oneData[i]);
-      } catch (IllegalArgumentException e) {
+      } catch (IndexOutOfBoundsException e) {
         res = false;
       }
 
@@ -111,14 +115,14 @@ public class LinkedTests {
     try {
       one.add(-2, "ahasda");
       results.add(false);
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(true);
     }
 
     try {
       one.add(19, "Yay");
       results.add(false);
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(true);
     }
 
@@ -136,7 +140,7 @@ public class LinkedTests {
     for (int i = 0; i < oneData.length; i++) {
       try {
         one.add(oneData[i]);
-      } catch (IllegalArgumentException e) {
+      } catch (IndexOutOfBoundsException e) {
         results.set(0, false);
         break;
       }
@@ -146,13 +150,13 @@ public class LinkedTests {
 
     try {
       results.add(one.add(1, "ziti"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
     try {
       results.add(one.add(3, "rigatoni"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
@@ -173,7 +177,7 @@ public class LinkedTests {
       for (int j = 0; j < test.length; j++) {
         try {
           testList.add(test[j]);
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
           failInfo.add("Array - " + Arrays.toString(test));
           break;
         }
@@ -204,7 +208,7 @@ public class LinkedTests {
     for (int i = 0; i < oneData.length; i++) {
       try {
         one.add(oneData[i]);
-      } catch (IllegalArgumentException e) {
+      } catch (IndexOutOfBoundsException e) {
         results.set(0, false);
         break;
       }
@@ -212,33 +216,33 @@ public class LinkedTests {
 
     try {
       results.add(one.set(1, "ziti").equals("penne"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
     try {
       results.add(one.set(3, "rigatoni").equals("linguini"));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
     try {
       one.set(10, "tagliatelle");
       results.add(false);
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(true);
     }
 
     try {
       one.set(-1, "spaghetti");
       results.add(false);
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(true);
     }
 
     try {
       results.add(one.set(4, "angel hair").equals(""));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
@@ -249,13 +253,13 @@ public class LinkedTests {
     try {
       two.set(1, "marinara");
       results.add(false);
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(true);
     }
 
     try {
       results.add(two.set(0, "lasagna").equals(""));
-    } catch (IllegalArgumentException e) {
+    } catch (IndexOutOfBoundsException e) {
       results.add(false);
     }
 
