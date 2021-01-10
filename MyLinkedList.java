@@ -155,13 +155,34 @@ public class MyLinkedList{
     return current.getData();
   }
 
-
 /*
 *@postcondition: All of the elements from other are removed from the other, and connected to the end of this linked list.
 *@postcondition: The size of other is reduced to 0.
 *@postcondition: The size of this is now the combined sizes of both original lists
 */
   public void extend(MyLinkedList other){
+    if (other.getStart() != null) {
+      boolean noEnd = false;
+      if (this.getEnd() != null) {
+        this.getEnd().setNext(other.getStart());
+        other.getStart().setPrev(this.getEnd());
+      } else if (this.getStart() != null) {
+        this.getStart().setNext(other.getStart());
+        other.getStart().setPrev(this.getStart());
+      } else {
+        noEnd = true;
+        this.setStart(other.getStart());
+      }
+
+      if (other.getEnd() != null) this.setEnd(other.getEnd());
+      else if (noEnd) this.setEnd(other.getStart());
+
+      this.setSize(size() + other.size());
+
+      other.setSize(0);
+      other.setStart(null);
+      other.setEnd(null);
+    }
   }
 
   private void setSize(int newSize) {
