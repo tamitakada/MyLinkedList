@@ -7,6 +7,155 @@ public class LinkedTests {
     testToString();
     testSet();
     testRemove();
+    testExtend();
+  }
+
+  public static void testExtend() {
+    ArrayList<Boolean> results = new ArrayList<Boolean>();
+
+    MyLinkedList one = new MyLinkedList();
+
+    //TEST 1
+    results.add(true);
+
+    for (int i = 0; i <= 10; i += 2) {
+      try {
+        one.add("" + i);
+      } catch (IndexOutOfBoundsException e) {
+        results.set(0, false);
+        break;
+      }
+    }
+
+    MyLinkedList two = new MyLinkedList();
+
+    //TEST 2
+    results.add(true);
+
+    for (int i = 1; i <= 11; i += 2) {
+      try {
+        one.add("odds!" + i);
+      } catch (IndexOutOfBoundsException e) {
+        results.set(0, false);
+        break;
+      }
+    }
+
+    one.extend(two);
+    String expected = "[0, 2, 4, 6, 8, 10, odds!1, odds!3, odds!5, odds!7, odds!9, odds!11]";
+    //TEST 3
+    results.add(one.toString().equals(expected));
+    //TEST 4
+    results.add(two.size() == 0);
+    //TEST 5
+    results.add(two.toString().equals("[]"));
+    //TEST 6
+    results.add(one.size() == 12);
+
+    MyLinkedList three = new MyLinkedList();
+
+    three.extend(one);
+    //TEST 7
+    results.add(three.toString().equals(expected));
+    //TEST 8
+    results.add(one.size() == 0);
+    //TEST 9
+    results.add(one.toString().equals("[]"));
+    //TEST 10
+    results.add(three.size() == 12);
+
+    two.extend(one);
+    //TEST 11
+    results.add(two.toString().equals("[]"));
+    //TEST 12
+    results.add(one.toString().equals("[]"));
+    //TEST 13
+    results.add(one.size() == 0);
+    //TEST 14
+    results.add(two.size() == 0);
+
+    try {
+      one.add("startNode");
+    } catch (IndexOutOfBoundsException e) {
+      //TEST 15 (only if fail)
+      results.add(false);
+    }
+
+    try {
+      two.add("startNode2");
+    } catch (IndexOutOfBoundsException e) {
+      //TEST 15 or 16 (only if fail)
+      results.add(false);
+    }
+
+    one.extend(two);
+    //TEST 15 (provided earlier fails do not exist)
+    results.add(one.toString().equals("[startNode, startNode2]"));
+    //TEST 16
+    results.add(two.toString().equals("[]"));
+    //TEST 17
+    results.add(one.size() == 2);
+    //TEST 18
+    results.add(two.size() == 0);
+
+    //TEST 19: RANDOMIZED TESTS
+    results.add(true);
+    ArrayList<String> failInfo = new ArrayList<String>();
+
+    for (int i = 0; i < 100; i++) {
+      String[] arrData = Utils.createRandomStrArr();
+      String[] arrDataTwo = Utils.createRandomStrArr();
+
+      String[] merged = new String[arrData.length + arrDataTwo.length];
+
+      MyLinkedList testPOne = new MyLinkedList();
+      MyLinkedList testPTwo = new MyLinkedList();
+
+      for (int j = 0; j < arrData.length; j++) {
+        merged[j] = arrData[j];
+        try {
+          testPOne.add(arrData[j]);
+        } catch (IndexOutOfBoundsException e) {
+          failInfo.add("Copying array - " + Arrays.toString(arrData));
+          results.set(results.size() - 1, false);
+          break;
+        }
+      }
+
+      if (failInfo.size() > 0) break;
+
+      for (int j = 0; j < arrDataTwo.length; j++) {
+        merged[j + arrData.length] = arrDataTwo[j];
+        try {
+          testPTwo.add(arrDataTwo[j]);
+        } catch (IndexOutOfBoundsException e) {
+          failInfo.add("Copying array - " + Arrays.toString(arrDataTwo));
+          results.set(results.size() - 1, false);
+          break;
+        }
+      }
+
+      if (failInfo.size() > 0) break;
+
+      testPOne.extend(testPTwo);
+      if (!testPOne.toString().equals(Arrays.toString(merged))) {
+        failInfo.add("Failed merge toStr");
+      } else if (testPOne.size() != merged.length) {
+        failInfo.add("Incorrect size of extended list");
+      } else if (testPTwo.size() != 0) {
+        failInfo.add("Merged list size not zero");
+      } else if (!testPTwo.toString().equals("[]")) {
+        failInfo.add("Failed to clear merged list");
+      }
+
+      if (failInfo.size() > 0) {
+        results.set(results.size() - 1, false);
+        break;
+      }
+    }
+
+    Utils.showResults(results, "Test extend");
+    Utils.showRandomResults(failInfo);
   }
 
   public static void testRemove() {
