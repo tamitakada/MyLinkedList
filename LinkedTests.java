@@ -6,10 +6,107 @@ public class LinkedTests {
     testAddWithIndex();
     testToString();
     testSet();
+    testRemove();
   }
 
   public static void testRemove() {
+    ArrayList<Boolean> results = new ArrayList<Boolean>();
 
+    MyLinkedList one = new MyLinkedList();
+
+    for (int i = 0; i <= 20; i += 2) {
+      try {
+        one.add("" + i);
+      } catch (IndexOutOfBoundsException e) {
+        results.add(false);
+        break;
+      }
+    }
+
+    for (int i = 0; i < 5; i++) {
+      try {
+        one.set(i, "" + i);
+      } catch (IndexOutOfBoundsException e) {
+        results.add(false);
+        break;
+      }
+    }
+
+    results.add(one.toString().equals("[0, 1, 2, 3, 4, 10, 12, 14, 16, 18, 20]"));
+    String[] expected = {"0", "1", "2", "3", "4", "10", "12", "14", "16", "18", "20"};
+
+    for (int i = one.size() - 1; i >= 0; i--) {
+      try {
+        results.add(one.remove(i).equals(expected[i]));
+      } catch (IndexOutOfBoundsException e) {
+        results.add(false);
+      }
+    }
+
+    results.add(one.toString().equals("[]"));
+
+    try {
+      one.remove(0);
+      results.add(false);
+    } catch (IndexOutOfBoundsException e) {
+      results.add(true);
+    }
+
+    results.add(true);
+    ArrayList<String> failInfo = new ArrayList<String>();
+
+    for (int i = 0; i < 100; i++) {
+      String[] arrData = Utils.createRandomStrArr();
+      while (arrData.length == 0) {
+        arrData = Utils.createRandomStrArr();
+      }
+
+      ArrayList<String> data = new ArrayList<String>(arrData.length);
+
+      for (int q = 0; q < arrData.length; q++) {
+        data.add(arrData[q]);
+      }
+
+      MyLinkedList test = new MyLinkedList();
+
+      for (int j = 0; j < data.size(); j++) {
+        try {
+          test.add(arrData[j]);
+        } catch (IndexOutOfBoundsException e) {
+          failInfo.add("Copying array - " + data);
+          results.set(results.size() - 1, false);
+          break;
+        }
+      }
+
+      if (failInfo.size() > 0) break;
+
+      Random rng = new Random();
+      int randomIndex = rng.nextInt(data.size());
+
+      try {
+        String removed = test.remove(randomIndex);
+        if (!removed.equals(data.remove(randomIndex))) {
+          results.set(results.size() - 1, false);
+          failInfo.add("Return from remove - index - " + randomIndex + " from " + test);
+        }
+      } catch (IndexOutOfBoundsException e) {
+        failInfo.add("Removing item - " + randomIndex + " from " + test);
+        results.set(results.size() - 1, false);
+      }
+
+      if (failInfo.size() > 0) break;
+
+      if (!test.toString().equals(data.toString())) {
+        failInfo.add("Str form - " + randomIndex + " test-" + test + "\n\nORIGINAL\n\n" + Arrays.toString(arrData) + "\n\nLIST FORM\n\n" + data);
+        results.set(results.size() - 1, false);
+      }
+
+      if (failInfo.size() > 0) break;
+    }
+
+    Utils.showResults(results, "Test remove");
+    Utils.showRandomResults(failInfo);
   }
 
   public static void testAddAndSizeWithGet() {

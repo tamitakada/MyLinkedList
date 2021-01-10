@@ -19,7 +19,7 @@ public class Utils {
   }
 
   public static String[] createRandomStrArr() {
-    int len = rng.nextInt(500);
+    int len = rng.nextInt(200);
     String[] toRet = new String[len];
 
     for (int i = 0; i < len; i++) {
